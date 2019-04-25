@@ -9,22 +9,20 @@ import java.util.LinkedList;
 public class DueDate {
 
     public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours){
-        if (hours < 1) {
-            return submitDate;
-        }
+        if (hours < 1) return submitDate;
+
         int submitHour = submitDate.getHour();
+        LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
 
-        LinkedList<Integer> hoursArray = getHoursArrayStartsWithSubmitHour(submitHour);
         int passedDays = 0;
-
         for(int i = 0; i < hours; i++){
-            Integer firstHourValue = hoursArray.removeFirst();
+            Integer firstHourValue = hoursList.removeFirst();
             if(firstHourValue == 9){
                 passedDays++;
-                hoursArray.addLast(firstHourValue);
-                firstHourValue = hoursArray.removeFirst();
+                hoursList.addLast(firstHourValue);
+                firstHourValue = hoursList.removeFirst();
             }
-            hoursArray.addLast(firstHourValue);
+            hoursList.addLast(firstHourValue);
         }
 
         LocalDateTime result = submitDate;
@@ -35,22 +33,18 @@ public class DueDate {
                 ++addedDays;
             }
         }
-        result = result.with(LocalTime.of(hoursArray.getFirst(), 0));
+        result = result.with(LocalTime.of(hoursList.getFirst(), 0));
 
         return result;
     }
 
-    private LinkedList<Integer> getHoursArrayStartsWithSubmitHour(int submitHour){
+    private LinkedList<Integer> getHoursListStartsWithSubmitHour(int submitHour){
         Integer[] hours = {9, 10, 11, 12, 13, 14, 15, 16, 17};
         LinkedList<Integer> hoursLinked = new LinkedList<>(Arrays.asList(hours));
 
-        for(int i = 0; i < hours.length; i++){
-            Integer first = hoursLinked.getFirst();
-            if(first == submitHour){
-                break;
-            }
-            Integer firstHour = hoursLinked.removeFirst();
-            hoursLinked.addLast(firstHour);
+        while(hoursLinked.getFirst() != submitHour){
+            Integer first = hoursLinked.removeFirst();
+            hoursLinked.addLast(first);
         }
         return hoursLinked;
     }
