@@ -44,7 +44,7 @@ public class DueDate {
     public LinkedList<Integer> getHoursListStartsWithSubmitHour(int submitHour) {
         Integer[] hours = {9, 10, 11, 12, 13, 14, 15, 16, 17};
         LinkedList<Integer> hoursLinked = new LinkedList<>(Arrays.asList(hours));
-
+        // shift the values until the submitHour is the first element
         while (hoursLinked.getFirst() != submitHour) {
             Integer first = hoursLinked.removeFirst();
             hoursLinked.addLast(first);
