@@ -22,13 +22,22 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResultTest() {
+    public void dueDateCalculatorReturnsExpectedResult32HoursTest() {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 32);
 
-        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
+        String expectedDateString = "2019-05-01 14:00";
+        String resultDateString = resultDate.format(formatter);
 
-        String expectedDateString = "2019-04-26 14:00";
+        assertEquals(expectedDateString, resultDateString);
+    }
 
+    @Test
+    public void dueDateCalculatorReturnsExpectedResult80HoursTest() {
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 80);
+
+        String expectedDateString = "2019-05-09 14:00";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
