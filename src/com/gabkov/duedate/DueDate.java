@@ -37,7 +37,7 @@ public class DueDate {
                 addedDays++;
             }
         }
-        result = result.with(LocalTime.of(hoursList.getFirst(), 0));
+        result = result.with(LocalTime.of(hoursList.getFirst(), submitDate.getMinute()));
         return result;
     }
 

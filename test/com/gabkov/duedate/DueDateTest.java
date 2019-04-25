@@ -26,10 +26,10 @@ class DueDateTest {
 
     @Test
     public void dueDateCalculatorReturnsExpectedResult8HoursTest() throws NotWorkingHoursException, InvalidHoursException {
-        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
 
-        String expectedDateString = "2019-04-26 14:00";
+        String expectedDateString = "2019-04-26 14:14";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
@@ -37,10 +37,10 @@ class DueDateTest {
 
     @Test
     public void dueDateCalculatorReturnsExpectedResult32HoursTest() throws NotWorkingHoursException, InvalidHoursException {
-        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 58);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 32);
 
-        String expectedDateString = "2019-05-01 14:00";
+        String expectedDateString = "2019-05-01 14:58";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
@@ -74,7 +74,7 @@ class DueDateTest {
     @Test
     public void getHoursListStartsWithSubmitHourWorksProperlyTest() {
         LinkedList<Integer> resultList = dueDate.getHoursListStartsWithSubmitHour(13);
-        LinkedList<Integer> expected = new LinkedList<Integer>(Arrays.asList(13, 14, 15, 16, 17, 9, 10, 11, 12));
+        LinkedList<Integer> expected = new LinkedList<>(Arrays.asList(13, 14, 15, 16, 17, 9, 10, 11, 12));
 
         assertEquals(expected, resultList);
     }
