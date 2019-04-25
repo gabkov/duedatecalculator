@@ -8,10 +8,9 @@ import java.util.LinkedList;
 
 /**
  * In my solution I use the work hours as a LinkedList. First I shift the values until the first element will be the
- * submit hour. Next I shift as many hours are passed to the dueDateCalculator and every new day (firstElement == 9) is incrementing
+ * submit hour. Next I left shift as many hours are passed to the dueDateCalculator and every new day (firstElement == 9) is incrementing
  * the passedDays variable. Lastly I add the days to the submitted date and return the Due Date with the shifted hour.
  */
-
 
 public class DueDate {
 
@@ -25,6 +24,7 @@ public class DueDate {
         LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
 
         int passedDays = getPassedDaysAndShiftHoursList(hoursList, hours);
+        // the hoursList first element is the needed hour value after the required shifts
         int shiftedHour = hoursList.getFirst();
 
         LocalDateTime result = submitDate;
@@ -41,6 +41,7 @@ public class DueDate {
 
     private int getPassedDaysAndShiftHoursList(LinkedList<Integer> hoursList, int hours) {
         int passedDays = 0;
+        // left shift as many hours passed
         for (int i = 0; i < hours; i++) {
             Integer firstElement = hoursList.removeFirst();
             if (firstElement == 9) {
