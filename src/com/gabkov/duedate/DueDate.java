@@ -6,6 +6,13 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * In my solution I use the work hours as a LinkedList. First I shift the values until the first element will be the
+ * submit hour. Next I shift as many hours are passed to the dueDateCalculator and every new day (firstElement == 9) is incrementing
+ * the passedDays variable. Lastly I add the days to the submitted date and return the Due Date with the shifted hour.
+ */
+
+
 public class DueDate {
 
     public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours) throws NotWorkingHoursException, InvalidHoursException {
@@ -17,17 +24,8 @@ public class DueDate {
 
         LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
 
-        int passedDays = 0;
-        for (int i = 0; i < hours; i++) {
-            Integer firstHourValue = hoursList.removeFirst();
-            if (firstHourValue == 9) {
-                passedDays++;
-                // an extra shift when a day passes 9 --> 10
-                hoursList.addLast(firstHourValue);
-                firstHourValue = hoursList.removeFirst();
-            }
-            hoursList.addLast(firstHourValue);
-        }
+        int passedDays = getPassedDaysAndShiftHoursList(hoursList, hours);
+        int shiftedHour = hoursList.getFirst();
 
         LocalDateTime result = submitDate;
         int addedDays = 0;
@@ -37,8 +35,23 @@ public class DueDate {
                 addedDays++;
             }
         }
-        result = result.with(LocalTime.of(hoursList.getFirst(), submitDate.getMinute()));
+        result = result.with(LocalTime.of(shiftedHour, submitDate.getMinute()));
         return result;
+    }
+
+    private int getPassedDaysAndShiftHoursList(LinkedList<Integer> hoursList, int hours) {
+        int passedDays = 0;
+        for (int i = 0; i < hours; i++) {
+            Integer firstElement = hoursList.removeFirst();
+            if (firstElement == 9) {
+                passedDays++;
+                // an extra shift when a day passed 9 --> 10
+                hoursList.addLast(firstElement);
+                firstElement = hoursList.removeFirst();
+            }
+            hoursList.addLast(firstElement);
+        }
+        return passedDays;
     }
 
     public LinkedList<Integer> getHoursListStartsWithSubmitHour(int submitHour) {
