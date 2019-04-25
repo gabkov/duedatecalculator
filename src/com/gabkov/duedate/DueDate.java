@@ -1,11 +1,11 @@
 package com.gabkov.duedate;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class DueDate {
 
 
-    public Date dueDateCalculator(Date submitDate, int hours){
+    public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours){
         return null;
     }
 

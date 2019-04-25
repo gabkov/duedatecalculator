@@ -3,9 +3,9 @@ package com.gabkov.duedate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +14,7 @@ class DueDateTest {
 
     private DueDate dueDate;
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy MMM dd HH:mm");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @BeforeEach
     public void init(){
@@ -23,22 +23,14 @@ class DueDateTest {
 
     @Test
     public void dueDateCalculatorReturnsExpectedResultTest() {
-        Date submitDate = new Calendar.Builder()
-                .setDate(2019, 4, 25)
-                .setTimeOfDay(14, 0, 0)
-                .build().getTime();
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
 
-        Date resultDate = dueDate.dueDateCalculator(submitDate, 8);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
 
-        Date expectedDate = new Calendar.Builder()
-                .setDate(2019, 4, 26)
-                .setTimeOfDay(14, 0, 0)
-                .build().getTime();
+        String expectedDateString = "2019-04-26 14:00";
 
-        String resultDateString = formatter.format(resultDate);
+        String resultDateString = resultDate.format(formatter);
 
-        String expectedDateString = formatter.format(expectedDate);
-
-        assertEquals(resultDateString, expectedDateString);
+        assertEquals(expectedDateString, resultDateString);
     }
 }
