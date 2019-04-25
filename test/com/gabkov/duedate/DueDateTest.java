@@ -22,6 +22,18 @@ class DueDateTest {
     }
 
     @Test
+    public void dueDateCalculatorReturnsExpectedResult8HoursTest() {
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
+
+        String expectedDateString = "2019-04-26 14:00";
+        String resultDateString = resultDate.format(formatter);
+
+        assertEquals(expectedDateString, resultDateString);
+    }
+
+
+    @Test
     public void dueDateCalculatorReturnsExpectedResult32HoursTest() {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 32);

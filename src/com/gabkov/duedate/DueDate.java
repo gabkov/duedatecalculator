@@ -4,9 +4,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class DueDate {
-
 
     public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours){
         if (hours < 1) {
@@ -14,20 +14,17 @@ public class DueDate {
         }
         int submitHour = submitDate.getHour();
 
-        int[] hoursArray = getHoursArrayStartsWithSubmitHour(submitHour);
+        LinkedList<Integer> hoursArray = getHoursArrayStartsWithSubmitHour(submitHour);
         int passedDays = 0;
 
         for(int i = 0; i < hours; i++){
-            int firstHourValue = hoursArray[0];
+            Integer firstHourValue = hoursArray.removeFirst();
             if(firstHourValue == 9){
                 passedDays++;
-                System.arraycopy(hoursArray, 1, hoursArray , 0, hoursArray.length-1);
-                hoursArray[hoursArray.length-1] = firstHourValue;
-                firstHourValue = hoursArray[0];
+                hoursArray.addLast(firstHourValue);
+                firstHourValue = hoursArray.removeFirst();
             }
-            System.arraycopy(hoursArray, 1, hoursArray , 0, hoursArray.length-1);
-            hoursArray[hoursArray.length-1] = firstHourValue;
-
+            hoursArray.addLast(firstHourValue);
         }
 
         LocalDateTime result = submitDate;
@@ -38,27 +35,24 @@ public class DueDate {
                 ++addedDays;
             }
         }
-
-        result = result.with(LocalTime.of(hoursArray[0], 0));
-
-        System.out.println(result);
+        result = result.with(LocalTime.of(hoursArray.getFirst(), 0));
 
         return result;
     }
 
-    private int[] getHoursArrayStartsWithSubmitHour(int submitHour){
-        int[] hours = {9, 10, 11, 12, 13, 14, 15, 16, 17};
+    private LinkedList<Integer> getHoursArrayStartsWithSubmitHour(int submitHour){
+        Integer[] hours = {9, 10, 11, 12, 13, 14, 15, 16, 17};
+        LinkedList<Integer> hoursLinked = new LinkedList<>(Arrays.asList(hours));
 
         for(int i = 0; i < hours.length; i++){
-            int first = hours[0];
+            Integer first = hoursLinked.getFirst();
             if(first == submitHour){
-                System.out.println(Arrays.toString(hours));
-                return hours;
+                break;
             }
-            System.arraycopy(hours, 1, hours , 0, hours.length-1);
-            hours[hours.length-1] = first;
+            Integer firstHour = hoursLinked.removeFirst();
+            hoursLinked.addLast(firstHour);
         }
-        return null;
+        return hoursLinked;
     }
 
     public static void main(String[] args) {
