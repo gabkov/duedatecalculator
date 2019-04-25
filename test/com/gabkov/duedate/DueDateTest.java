@@ -23,7 +23,7 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult8HoursTest() throws NotWorkingHoursException {
+    public void dueDateCalculatorReturnsExpectedResult8HoursTest() throws NotWorkingHoursException, InvalidHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
 
@@ -35,7 +35,7 @@ class DueDateTest {
 
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult32HoursTest() throws NotWorkingHoursException {
+    public void dueDateCalculatorReturnsExpectedResult32HoursTest() throws NotWorkingHoursException, InvalidHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 32);
 
@@ -46,7 +46,7 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult80HoursTest() throws NotWorkingHoursException {
+    public void dueDateCalculatorReturnsExpectedResult80HoursTest() throws NotWorkingHoursException, InvalidHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 80);
 
@@ -61,5 +61,12 @@ class DueDateTest {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 18, 0);
 
         assertThrows(NotWorkingHoursException.class, () -> dueDate.dueDateCalculator(submitDate, 80));
+    }
+
+    @Test
+    public void dueDateCalculatorThrowsExceptionForInvalidHourInput(){
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 15, 0);
+
+        assertThrows(InvalidHoursException.class, () -> dueDate.dueDateCalculator(submitDate, -2));
     }
 }

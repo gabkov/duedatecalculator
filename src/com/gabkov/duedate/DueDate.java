@@ -8,11 +8,11 @@ import java.util.LinkedList;
 
 public class DueDate {
 
-    public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours) throws NotWorkingHoursException {
+    public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours) throws NotWorkingHoursException, InvalidHoursException {
         int submitHour = submitDate.getHour();
 
         if(submitHour < 9 || submitHour > 17) throw new NotWorkingHoursException("Work hours are between 9AM-5PM, please try again tomorrow.");
-        if (hours < 1) return submitDate;
+        if (hours < 1) throw new InvalidHoursException("Hours must be at least 1 or positive");
 
         LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
 
