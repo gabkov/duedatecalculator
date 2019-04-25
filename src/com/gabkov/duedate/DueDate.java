@@ -8,10 +8,12 @@ import java.util.LinkedList;
 
 public class DueDate {
 
-    public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours){
+    public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours) throws NotWorkingHoursException {
+        int submitHour = submitDate.getHour();
+
+        if(submitHour < 9 || submitHour > 17) throw new NotWorkingHoursException("Work hours are between 9AM-5PM, please try again tomorrow.");
         if (hours < 1) return submitDate;
 
-        int submitHour = submitDate.getHour();
         LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
 
         int passedDays = 0;
@@ -19,6 +21,7 @@ public class DueDate {
             Integer firstHourValue = hoursList.removeFirst();
             if(firstHourValue == 9){
                 passedDays++;
+                // an extra shift when a day passes 9 --> 10
                 hoursList.addLast(firstHourValue);
                 firstHourValue = hoursList.removeFirst();
             }
@@ -30,11 +33,10 @@ public class DueDate {
         while (addedDays < passedDays) {
             result = result.plusDays(1);
             if (!(result.getDayOfWeek() == DayOfWeek.SATURDAY || result.getDayOfWeek() == DayOfWeek.SUNDAY)) {
-                ++addedDays;
+                addedDays++;
             }
         }
         result = result.with(LocalTime.of(hoursList.getFirst(), 0));
-
         return result;
     }
 
@@ -49,7 +51,5 @@ public class DueDate {
         return hoursLinked;
     }
 
-    public static void main(String[] args) {
-        // write your code here
-    }
+    public static void main(String[] args) {}
 }

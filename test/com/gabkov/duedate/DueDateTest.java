@@ -8,6 +8,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 class DueDateTest {
@@ -22,7 +23,7 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult8HoursTest() {
+    public void dueDateCalculatorReturnsExpectedResult8HoursTest() throws NotWorkingHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
 
@@ -34,7 +35,7 @@ class DueDateTest {
 
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult32HoursTest() {
+    public void dueDateCalculatorReturnsExpectedResult32HoursTest() throws NotWorkingHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 32);
 
@@ -45,7 +46,7 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResult80HoursTest() {
+    public void dueDateCalculatorReturnsExpectedResult80HoursTest() throws NotWorkingHoursException {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 14, 0);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 80);
 
@@ -53,5 +54,12 @@ class DueDateTest {
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
+    }
+
+    @Test
+    public void dueDateCalculatorThrowsExceptionForInvalidSubmitTimeTest(){
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 18, 0);
+
+        assertThrows(NotWorkingHoursException.class, () -> dueDate.dueDateCalculator(submitDate, 80));
     }
 }
