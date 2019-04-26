@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -151,7 +149,7 @@ class DueDateTest {
         submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 16, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 17);
 
-        String expectedDateString = "2019-04-29 17:14";
+        String expectedDateString = "2019-04-30 09:14";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
@@ -178,11 +176,11 @@ class DueDateTest {
         assertThrows(InvalidHoursException.class, () -> dueDate.dueDateCalculator(submitDate, -2));
     }
 
-    @Test
+   /* @Test
     public void getHoursListStartsWithSubmitHourWorksProperlyTest() {
         LinkedList<Integer> resultList = dueDate.getHoursListStartsWithSubmitHour(13);
         LinkedList<Integer> expected = new LinkedList<Integer>(Arrays.asList(13, 14, 15, 16, 17, 9, 10, 11, 12));
 
         assertEquals(expected, resultList);
-    }
+    }*/
 }
