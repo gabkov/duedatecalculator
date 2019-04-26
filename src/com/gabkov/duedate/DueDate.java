@@ -8,8 +8,8 @@ import java.util.LinkedList;
 
 /**
  * In my solution I use the work hours as a LinkedList. First I shift the values until the first element will be the
- * submit hour. Next I left shift as many hours are passed to the dueDateCalculator and every new day (firstElement == 9) is incrementing
- * the passedDays variable. Lastly I add the days to the submitted date and return the Due Date with the shifted hour.
+ * submit hour. Next I left shift as many hours are left-over (the not whole days).
+ * Lastly I add the days to the submitted date and return the Due Date with the shifted hour.
  */
 
 public class DueDate {
@@ -17,19 +17,25 @@ public class DueDate {
     public LocalDateTime dueDateCalculator(LocalDateTime submitDate, int hours) throws NotWorkingHoursException, InvalidHoursException {
         int submitHour = submitDate.getHour();
 
-        if (submitHour < 9 || submitHour > 17)
+        if (submitHour < 9 || (submitHour >= 17))
             throw new NotWorkingHoursException("Work hours are between 9AM-5PM, please try again tomorrow.");
         if (hours < 1) throw new InvalidHoursException("Hours must be at least 1 or positive");
 
         LinkedList<Integer> hoursList = getHoursListStartsWithSubmitHour(submitHour);
+        // calculate the remaining hours
+        int calculatedHours = (int) (((hours/8d) - (hours/8)) * 8);
+        int passedDays = getPassedDaysAndShiftHoursList(hoursList, calculatedHours);
 
-        int passedDays = getPassedDaysAndShiftHoursList(hoursList, hours);
         // the hoursList first element is the needed hour value after the required shifts
         int shiftedHour = hoursList.getFirst();
+        int days = hours / 8;
+
+        // necessary if the days are 0 and the following hours are at the next day
+        int calculatedDays = Math.max(passedDays, days);
 
         LocalDateTime result = submitDate;
         int addedDays = 0;
-        while (addedDays < passedDays) {
+        while (addedDays < calculatedDays) {
             result = result.plusDays(1);
             if (!(result.getDayOfWeek() == DayOfWeek.SATURDAY || result.getDayOfWeek() == DayOfWeek.SUNDAY)) {
                 addedDays++;
@@ -41,10 +47,10 @@ public class DueDate {
 
     private int getPassedDaysAndShiftHoursList(LinkedList<Integer> hoursList, int hours) {
         int passedDays = 0;
-        // left shift as many hours passed
+        // left shift as many hours are remained
         for (int i = 0; i < hours; i++) {
             Integer firstElement = hoursList.removeFirst();
-            if (firstElement == 9 && i > 0) {
+            if (firstElement == 17) {
                 passedDays++;
                 // i-- for an extra shift when a day passed 9 --> 10
                 i--;

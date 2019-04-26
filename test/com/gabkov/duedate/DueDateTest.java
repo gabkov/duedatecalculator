@@ -67,6 +67,29 @@ class DueDateTest {
     }
 
     @Test
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom9Add5Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 9, 14);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 5);
+
+        String expectedDateString = "2019-04-25 14:14";
+        String resultDateString = resultDate.format(formatter);
+
+        assertEquals(expectedDateString, resultDateString);
+    }
+
+    @Test
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom9Add8Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 9, 14);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 8);
+
+        String expectedDateString = "2019-04-26 09:14";
+        String resultDateString = resultDate.format(formatter);
+
+        assertEquals(expectedDateString, resultDateString);
+    }
+
+
+    @Test
     public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom9Add9Test() throws NotWorkingHoursException, InvalidHoursException {
         submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 9, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 9);
@@ -77,16 +100,18 @@ class DueDateTest {
         assertEquals(expectedDateString, resultDateString);
     }
 
-    @Test
-    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom9Add5Test() throws NotWorkingHoursException, InvalidHoursException {
-        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 9, 14);
-        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 5);
 
-        String expectedDateString = "2019-04-25 14:14";
+    @Test
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom9Add16Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 9, 14);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 16);
+
+        String expectedDateString = "2019-04-29 09:14";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
     }
+
 
     @Test
     public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom10Add5Test() throws NotWorkingHoursException, InvalidHoursException {
@@ -100,20 +125,31 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom17Add5Test() throws NotWorkingHoursException, InvalidHoursException {
-        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 17, 14);
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom16Add5Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 16, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 5);
 
-        String expectedDateString = "2019-04-26 14:14";
+        String expectedDateString = "2019-04-26 13:14";
         String resultDateString = resultDate.format(formatter);
 
         assertEquals(expectedDateString, resultDateString);
     }
 
     @Test
-    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom17Add16Test() throws NotWorkingHoursException, InvalidHoursException {
-        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 17, 14);
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom16Add16Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 16, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 16);
+
+        String expectedDateString = "2019-04-29 16:14";
+        String resultDateString = resultDate.format(formatter);
+
+        assertEquals(expectedDateString, resultDateString);
+    }
+
+    @Test
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom16Add17Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 16, 14);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 17);
 
         String expectedDateString = "2019-04-29 17:14";
         String resultDateString = resultDate.format(formatter);
@@ -122,7 +158,14 @@ class DueDateTest {
     }
 
     @Test
-    public void dueDateCalculatorThrowsExceptionForInvalidSubmitTimeTest() {
+    public void dueDateCalculatorThrowsExceptionForInvalidSubmitTime1700Test() {
+        LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 17, 0);
+
+        assertThrows(NotWorkingHoursException.class, () -> dueDate.dueDateCalculator(submitDate, 80));
+    }
+
+    @Test
+    public void dueDateCalculatorThrowsExceptionForInvalidSubmitTime1800Test() {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 18, 0);
 
         assertThrows(NotWorkingHoursException.class, () -> dueDate.dueDateCalculator(submitDate, 80));
