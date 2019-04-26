@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -87,6 +89,17 @@ class DueDateTest {
     }
 
     @Test
+    public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom10Add5Test() throws NotWorkingHoursException, InvalidHoursException {
+        submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 10, 14);
+        LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 5);
+
+        String expectedDateString = "2019-04-25 15:14";
+        String resultDateString = resultDate.format(formatter);
+
+        assertEquals(expectedDateString, resultDateString);
+    }
+
+    @Test
     public void dueDateCalculatorReturnsExpectedResultSubmitHourStartsFrom17Test() throws NotWorkingHoursException, InvalidHoursException {
         submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 17, 14);
         LocalDateTime resultDate = dueDate.dueDateCalculator(submitDate, 5);
@@ -109,5 +122,13 @@ class DueDateTest {
         LocalDateTime submitDate = LocalDateTime.of(2019, Month.APRIL, 25, 15, 0);
 
         assertThrows(InvalidHoursException.class, () -> dueDate.dueDateCalculator(submitDate, -2));
+    }
+
+    @Test
+    public void getHoursListStartsWithSubmitHourWorksProperlyTest() {
+        LinkedList<Integer> resultList = dueDate.getHoursListStartsWithSubmitHour(13);
+        LinkedList<Integer> expected = new LinkedList<Integer>(Arrays.asList(13, 14, 15, 16, 17, 9, 10, 11, 12));
+
+        assertEquals(expected, resultList);
     }
 }
